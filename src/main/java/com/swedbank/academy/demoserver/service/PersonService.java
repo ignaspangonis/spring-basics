@@ -17,4 +17,6 @@ public interface PersonService {
     void delete(long pid) throws PersonNotFoundException;
 
     public void addPerson(Person person) throws PersonAlreadyExistsException;
+
+    public void updatePerson(Person newPerson, long pid) throws PersonNotFoundException;
 }

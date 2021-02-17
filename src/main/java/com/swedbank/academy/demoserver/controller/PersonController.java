@@ -54,14 +54,24 @@ public class PersonController {
         }
     }
 
-    @PostMapping(consumes = "application/json", produces = "application/json")
-    public ResponseEntity<Void> postPerson(@PathVariable("person") Person person) {
+    @PostMapping(consumes = "application/json")
+    public ResponseEntity<Void> postPerson(Person person) {
         try {
             personService.addPerson(person);
             return ResponseEntity.ok().build();
         } catch (PersonAlreadyExistsException e) {
             //log.error("deletePerson", e);
-            return ResponseEntity.notFound().build();
+            return ResponseEntity.badRequest().build();
+        }
+    }
+
+    @PutMapping(consumes = "application/json", path = "/{pid}")
+    public ResponseEntity<Void> updatePerson(@RequestBody Person person, @PathVariable("pid") long pid) {
+        try {
+            personService.updatePerson(person, pid);
+            return ResponseEntity.ok().build();
+        } catch (PersonNotFoundException ex) {
+            return ResponseEntity.badRequest().build();
         }
     }
 }

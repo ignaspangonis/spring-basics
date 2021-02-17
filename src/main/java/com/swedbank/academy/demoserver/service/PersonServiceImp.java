@@ -31,17 +31,30 @@ public class PersonServiceImp implements PersonService {
 
     @Override
     public void delete(long pid) throws PersonNotFoundException {
-        Person person = personRepository.findById(pid).orElseThrow(() -> new PersonNotFoundException(pid));
+        personRepository.findById(pid).orElseThrow(() -> new PersonNotFoundException(pid));
         // ar turime? ne -> throwinam exceptiona
         personRepository.deleteById(pid);
     }
 
     @Override
     public void addPerson(Person person) throws PersonAlreadyExistsException {
-        if (personRepository.existsById(person.getPid())) {
+        if (personRepository.existsById(person.getPid()) ||
+                personRepository.findPersonByEmail(person.getEmail()).isPresent()) {
             throw new PersonAlreadyExistsException(person.getPid());
         } else {
             personRepository.save(person);
         }
+    }
+
+    @Override
+    public void updatePerson(Person newPerson, long pid) throws PersonNotFoundException {
+        personRepository.findById(pid).map(person -> {
+            person.setName(newPerson.getName());
+            person.setLastName(newPerson.getLastName());
+            person.setMiddleName(newPerson.getMiddleName());
+            person.setEmail(newPerson.getEmail());
+            person.setPhone(newPerson.getPhone());
+            return personRepository.save(person);
+        }).orElseThrow(() -> new PersonNotFoundException(pid));
     }
 }
