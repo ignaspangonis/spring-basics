@@ -1,7 +1,6 @@
 package com.swedbank.academy.demoserver.repository;
 
 import com.swedbank.academy.demoserver.person.Person;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
@@ -15,6 +14,4 @@ public interface PersonRepository extends JpaRepository<Person, Long> {
 
     @Query("SELECT p FROM Person p WHERE p.email = ?1")
     Optional<Person> findPersonByEmail(String email);
-
-
 }
