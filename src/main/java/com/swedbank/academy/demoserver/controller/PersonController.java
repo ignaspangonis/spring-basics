@@ -70,7 +70,7 @@ public class PersonController {
         try {
             personService.updatePerson(person, pid);
             return ResponseEntity.ok().build();
-        } catch (PersonNotFoundException ex) {
+        } catch (PersonNotFoundException e) {
             return ResponseEntity.badRequest().build();
         }
     }
