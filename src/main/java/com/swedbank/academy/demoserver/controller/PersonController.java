@@ -1,7 +1,9 @@
-package com.swedbank.academy.demoserver.person;
+package com.swedbank.academy.demoserver.controller;
 
-import com.swedbank.academy.demoserver.person.exception.PersonNotFoundException;
-import com.swedbank.academy.demoserver.person.exception.PersonPostFailedException;
+import com.swedbank.academy.demoserver.exception.PersonNotFoundException;
+import com.swedbank.academy.demoserver.exception.PersonAlreadyExistsException;
+import com.swedbank.academy.demoserver.person.Person;
+import com.swedbank.academy.demoserver.service.PersonService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -57,7 +59,7 @@ public class PersonController {
         try {
             personService.addPerson(person);
             return ResponseEntity.ok().build();
-        } catch (PersonPostFailedException e) {
+        } catch (PersonAlreadyExistsException e) {
             //log.error("deletePerson", e);
             return ResponseEntity.notFound().build();
         }

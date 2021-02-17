@@ -1,4 +1,4 @@
-package com.swedbank.academy.demoserver.person.exception;
+package com.swedbank.academy.demoserver.exception;
 
 public class PersonNotFoundException extends Exception {
     public PersonNotFoundException(long id) {

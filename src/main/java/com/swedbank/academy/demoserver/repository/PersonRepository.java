@@ -1,5 +1,6 @@
-package com.swedbank.academy.demoserver.person;
+package com.swedbank.academy.demoserver.repository;
 
+import com.swedbank.academy.demoserver.person.Person;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.repository.JpaRepository;
 

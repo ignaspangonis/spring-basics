@@ -1,8 +1,9 @@
-package com.swedbank.academy.demoserver.person;
+package com.swedbank.academy.demoserver.service;
 
-import com.swedbank.academy.demoserver.person.exception.PersonNotFoundException;
-import com.swedbank.academy.demoserver.person.exception.PersonPostFailedException;
-import com.swedbank.academy.demoserver.person.validator.PersonValidator;
+import com.swedbank.academy.demoserver.exception.PersonNotFoundException;
+import com.swedbank.academy.demoserver.exception.PersonAlreadyExistsException;
+import com.swedbank.academy.demoserver.person.Person;
+import com.swedbank.academy.demoserver.repository.PersonRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -12,12 +13,10 @@ import java.util.List;
 public class PersonServiceImp implements PersonService {
 
     private final PersonRepository personRepository;
-    private final PersonValidator personValidator;
 
     @Autowired                      // veiktų ir be šito rašome tik dėl readibility
-    public PersonServiceImp(PersonRepository personRepository, PersonValidator personValidator) {
+    public PersonServiceImp(PersonRepository personRepository) {
         this.personRepository = personRepository;
-        this.personValidator = personValidator;
     }
 
     @Override
@@ -27,8 +26,7 @@ public class PersonServiceImp implements PersonService {
 
     @Override
     public Person getById(final long pid) throws PersonNotFoundException {
-        Person person = personRepository.findById(pid).orElseThrow(() -> new PersonNotFoundException(pid));
-        return person;
+        return personRepository.findById(pid).orElseThrow(() -> new PersonNotFoundException(pid));
     }
 
     @Override
@@ -39,8 +37,11 @@ public class PersonServiceImp implements PersonService {
     }
 
     @Override
-    public void addPerson(Person person) throws PersonPostFailedException {
-        personValidator.validate(person);
-        personRepository.save(person);
+    public void addPerson(Person person) throws PersonAlreadyExistsException {
+        if (personRepository.existsById(person.getPid())) {
+            throw new PersonAlreadyExistsException(person.getPid());
+        } else {
+            personRepository.save(person);
+        }
     }
 }
