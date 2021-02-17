@@ -5,7 +5,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.ComponentScan;
 
 @SpringBootApplication
-@ComponentScan({"com.swedbank.academy.demoserver.person"}) // iš kur skenuoti komponentus?
+@ComponentScan({"com.swedbank.academy.demoserver"}) // iš kur skenuoti komponentus?
 public class DemoServerApplication {
 
 	public static void main(String[] args) {
